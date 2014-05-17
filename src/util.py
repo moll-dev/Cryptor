@@ -1,17 +1,6 @@
 import dropbox, webbrowser, gnupg, sys, os, json
 
-class Debugger():
-    def __init__(self, DEBUG_ON=False):
-        self.debug = DEBUG_ON
-
-    def log(self, msg):
-        if self.debug:
-            print "[Debug] "+msg
-
-    def set(self, switch):
-        self.debug = switch
-
-def generate_keys(key, secret, gpg_size=2048, key_space="/keychains", filename="keychain.data"):
+def generate_keys(key, secret, gpg_size=2048, key_space="", filename="keychain.data"):
 
     dropbox_key = generate_client_key(key, secret)
     gpg_key = generate_gpg_key(os.getcwd()+key_space)
@@ -53,12 +42,15 @@ def generate_gpg_key(gpg_home):
 
     return {'private':gpg.export_keys(key.fingerprint, True),'public':gpg.export_keys(key.fingerprint)}
 
-def load_gpg_keys(): #TODO
-    pass
 
-def verify_keyfile(): #TODO: Verify that the keyfile given is valid.
-    pass
-
-def debug(msg):
-    if DEBUG_ON:
-        print(msg)
+def generate_config():
+	"""
+	-Working Directory
+	-App_Secret *
+	-App_Key * Doesn't Change
+	-Client_Key
+	-Client_Secret
+	"""
+	cryptor_home = raw_input("Please type the directory (default: current directory): ")
+	if cryptor_home is not None:
+		cryptor_home = os.getcwd()

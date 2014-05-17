@@ -2,13 +2,15 @@ import client
 from util import *
 from keychain import *
 
-"""Load settings etc"""
-console = Debugger(True)
 
-#these settings can be loaded via json
-APP_KEY = '6gccue9fycfx31b'
-APP_SECRET = 'wrtegtt4cu3z05e'
-ACCESS_TYPE = 'dropbox'
+
+'''
+CURRENT NON WORKING FILE
+
+WILL BE UPDATED LATER
+
+TRY OUT TEST.PY
+'''
 
 
 keyfile = "keychains/keychain.data"

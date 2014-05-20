@@ -1,4 +1,4 @@
-import client
+import cryptorclient
 from util import *
 from keychain import *
 

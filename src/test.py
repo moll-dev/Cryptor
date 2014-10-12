@@ -8,7 +8,6 @@ def load_config():
 	loader = ConfigParser.RawConfigParser()
 	try:
 		loader.read('..\\sandbox\\.config\\cryptor.cfg')
-		print 'Loaded config file'
 	except:
 		print 'Failed to load Cryptor\'s config file'
 
@@ -23,6 +22,6 @@ settings = load_config()
 
 cclient = cryptorclient.CryptorClient(settings)
 #cclient.(open('SecondTest.txt.crypto'))
-
+cclient.pull('Creatures.m4a')
 
 #generate_gpg_key('E:\Programming\Cryptor\Secrets')

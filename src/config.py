@@ -40,7 +40,7 @@ print 'Directory set to: '+gpg_home+'\n'
 db_home = raw_input("Please type the directory for Cryptor to store your files on Dropbox (defaults to root): ").strip()
 if not db_home.strip():
 	db_home = ''
-config.set('Settings', 'db_home', db_home)
+config.set('Settings', 'db_home', '/'+db_home)
 print 'Directory set to: '+db_home+'\n'
 
 print 'Generating paths'

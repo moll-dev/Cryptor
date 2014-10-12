@@ -7,7 +7,7 @@ settings = {}
 def load_config():
 	loader = ConfigParser.RawConfigParser()
 	try:
-		loader.read('..\\sandbox\\.config\\cryptor.cfg')
+		loader.read('E:\Cryptor\.config\cryptor.cfg')
 	except:
 		print 'Failed to load Cryptor\'s config file'
 
@@ -21,7 +21,14 @@ def load_config():
 settings = load_config()
 
 cclient = cryptorclient.CryptorClient(settings)
-#cclient.(open('SecondTest.txt.crypto'))
-cclient.pull('Creatures.m4a')
+
+flag = True
+while(flag):
+	#cclient.get_local_delta()
+	print cclient.get_remote_delta()
+
+	ans = raw_input('Exit?')
+	if ans == 'x':
+		flag = False
 
 #generate_gpg_key('E:\Programming\Cryptor\Secrets')

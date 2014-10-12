@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('Cryptor Daemon')
 
 
-settings = load_config.load_config('..\\sandbox\\.config\\cryptor.cfg')
+settings = load_config.load_config('E:\Cryptor\.config\cryptor.cfg')
 logger.info('Loaded Config')
 
 client = CryptorClient(settings)

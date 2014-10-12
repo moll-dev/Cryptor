@@ -17,14 +17,14 @@ class CryptorClient:
 		self.gpg = gnupg.GPG(gnupghome=self.settings['gpg_home'])
 		self.normal_dir = self.settings['normal_folder_path']
 		self.hidden_dir = self.settings['hidden_folder_path']
-		self.db_home = self.settings['db_home']
+		self.db_home = self.settings['db_home']+'/'
 
 		sess = session.DropboxSession(self.settings['app_key'], self.settings['app_secret'], 'dropbox')
 		sess.set_token(self.settings['client_key'], self.settings['client_secret'])
 		self.db = client.DropboxClient(sess)
 
 		self.local_delta = dict ([(f, None) for f in os.listdir (self.normal_dir)])
-		self.remote_delta = self.db.delta(path_prefix=self.db_home)
+		self.remote_delta = self.db.delta(path_prefix=self.db_home[:-1])
 
 	def push(self, filename):
 		"""
@@ -125,19 +125,60 @@ class CryptorClient:
 			encrypted_file.write(f.read())
 		encrypted_file.close()
 
+	def sync(self):
+		local = os.listdir(self.normal_dir)
+		remote = []
+		for file in self.db.metadata(self.db_home)['contents']:
+			remote.append(file['path'].split('/')[0][:-7])
+
+		if set(local) == set(remote):
+			return True;
+
+		local_added, local_removed = self.get_local_delta()
+		remote_added, remote_removed = self.get_remote_delta()
+
+		print local_added, local_removed
+		print remote_added, remote_removed
+
+		for file in local_removed:
+			self.delete_remote(file)
+
+		for file in remote_removed:
+			self.delete_local(file)
+
+		for file in local_added:
+			self.push(file)
+
+		for file in remote_added:
+			self.pull(file)
+
+
+
 
 	def delete_local(self, filename):
-		os.remove(self.normal_dir+filename)
-		os.remove(self.hidden_dir+filename+'.crypto')
+		try:
+			os.remove(self.normal_dir+filename)
+		except Exception:
+			return False
 
+		try:
+			os.remove(self.hidden_dir+filename+'.crypto')
+		except Exception:
+			return False
+		return True
 
 	def delete_remote(self, filename):
-		self.db.file_delete(self.db_home+filename+'.crypto')
+		try:
+			self.db.file_delete(self.db_home+filename+'.crypto')
+		except Exception:
+			return False
+		return True
+
 
 
 	def delete(self, filename):
 		self.delete_remote(filename)
-		os.remove(self.hidden_dir+filename+'.crypto')
+		self.delete_local(filename)
 
 
 	def verify_environment(self):
@@ -170,6 +211,7 @@ class CryptorClient:
 
 		return added, removed
 
+
 	def get_remote_delta(self):
 		delta = self.db.delta(self.remote_delta['cursor'], self.settings['db_home'])
 		diff = delta['entries']
@@ -179,19 +221,19 @@ class CryptorClient:
 
 		if diff:
 			for change in diff:
-				#Determine if it's an addition, subtraction, amendment
-
+				if not '.crypto' in change[0]:
+					continue
+				#Determine if it's an addition, [subtraction, amendment
+				change[0] = change[0].split('/')[-1]
+				change[0] = change[0][:-7]
 				#If there's a change
 				if change[1]:
+
 					changed.append(change[0])
-					#logger.info('There\'s been a change')
-					#logger.info('In File '+change[0].split('/')[-1])
-					#Download or Redownload the file
 
 				else:
 					removed.append(change[0])
-					#logger.info(change[0]+' Was removed')
-					#So delete the file locally using path
+
 
 		else:
 			pass

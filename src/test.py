@@ -25,7 +25,8 @@ cclient = cryptorclient.CryptorClient(settings)
 flag = True
 while(flag):
 	#cclient.get_local_delta()
-	print cclient.get_remote_delta()
+	print cclient.sync()
+
 
 	ans = raw_input('Exit?')
 	if ans == 'x':

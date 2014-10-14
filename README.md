@@ -1,6 +1,7 @@
 Cryptor
 =======
 
+![Our Logo](https://dl-web.dropbox.com/get/Files/cryptor2.png?_subject_uid=145200930&w=AABEuqo1ctiW8PA60qGMB3hSPdhagwBmHuMZofTZsTtZtg)
 NOTE: This app is currently being submitted to Dropbox for public usage approval!
 
 A layer of security for your Dropbox files! 

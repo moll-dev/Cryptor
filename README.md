@@ -17,10 +17,10 @@ Below are the steps to get Cryptor setup on your computer (so far anyways)
 2. Make a folder for Cryptor to work out of.
 3. Run 'config.py'
 4. Specify the folder you want Cryptor to use.
-5. Authenticate Cryptor with your account
+5. Authenticate Cryptor with your account.
 6. Play around with the API to push and pull your files securely!
-### Road map
 
+### Road map
 + [ ] Get public app approval with Dropbox
 + [ ] Daemon Service
 + [ ] System Tray Status
